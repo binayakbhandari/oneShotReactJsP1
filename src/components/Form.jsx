@@ -2,33 +2,38 @@ import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-function Form({type}) {
+function Form({type,product}){
+    // console.log(product,"haha")
     const navigate = useNavigate()
-    const [data,setData] = useState({
-        productName : "",
-        productDescription : "",
-        productCategory : "",
-        productBrand : "",
-        productPrice : "",
-        productImage : ""
-    })
+    const [data,setData] = useState(product || {
+        productName: "",
+        productCategory: "",
+        productBrand: "",
+        productPrice: "",
+        productImage: "",
+        productDescription: "",
+      })
+    console.log(data,"This is data")
 
     const handleChange = (e)=>{
         const {value, name} = e.target
-        console.log(value,name)
         setData({
             ...data,
             [name] : value
         })
     }
     
-    const createProduct = async (e) => {
+    const createProduct = async (e)=>{
         e.preventDefault()
-        const response = await axios.post("https://66dc946947d749b72acbfa21.mockapi.io/products", data)
-        if(response.status === 201){
-            navigate("/")
+        if(type === "create"){
+            const response = await axios.post("https://66dc946947d749b72acbfa21.mockapi.io/products",data)
+            if(response.status === 201){
+                navigate("/")
+            }else{
+                alert("Fail to create a product.")
+            }
         }else{
-            alert("Fail to create a product.")
+
         }
     }
 
@@ -49,31 +54,31 @@ function Form({type}) {
                     <div class="grid grid-cols-6 gap-6">
                         <div class="col-span-6 sm:col-span-3">
                             <label for="productName" class="text-sm font-medium text-gray-900 block mb-2">Product Name</label>
-                            <input type="text" name="productName" id="productName" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5" placeholder="Apple Imac 27”" required="" onChange={handleChange} />
+                            <input type="text" value={data.productName} name="productName" id="productName" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5" placeholder="Apple Imac 27”" required="" onChange={handleChange} />
                         </div>
                         <div class="col-span-6 sm:col-span-3">
                             <label for="productCategory" class="text-sm font-medium text-gray-900 block mb-2">Category</label>
-                            <input type="text" name="productCategory" id="productCategory" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5" placeholder="Electronics" required="" onChange={handleChange} />
+                            <input type="text" name="productCategory" id="productCategory" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5" value={data.productCategory} placeholder="Electronics" required="" onChange={handleChange} />
                         </div>
                         <div class="col-span-6 sm:col-span-3">
                             <label for="productBrand" class="text-sm font-medium text-gray-900 block mb-2">Brand</label>
-                            <input type="text" name="productBrand" id="productBrand" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5" placeholder="Apple" required="" onChange={handleChange} />
+                            <input type="text" value={data.productBrand} name="productBrand" id="productBrand" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5" placeholder="Apple" required="" onChange={handleChange} />
                         </div>
                         <div class="col-span-6 sm:col-span-3">
                             <label for="productPrice" class="text-sm font-medium text-gray-900 block mb-2">Price</label>
-                            <input type="number" name="productPrice" id="productPrice" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5" placeholder="$2300" required="" onChange={handleChange} />
+                            <input type="number" value={data.productPrice} name="productPrice" id="productPrice" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5" placeholder="$2300" required="" onChange={handleChange} />
                         </div>
                         <div class="col-span-6 sm:col-span-3">
                             <label for="productImage" class="text-sm font-medium text-gray-900 block mb-2">Image</label>
-                            <input type="text" name="productImage" id="productPrice" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5" placeholder="https://example.com/hello.png" required="" onChange={handleChange} />
+                            <input type="text" value={data.productImage} name="productImage" id="productImage" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5" placeholder="https://example.com/hello.png" required="" onChange={handleChange} />
                         </div>
                         <div class="col-span-full">
                             <label for="productDescription" class="text-sm font-medium text-gray-900 block mb-2">Product Description</label>
-                            <textarea id="productDescription" name="productDescription" rows="6" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-4" placeholder="Details" onChange={handleChange} ></textarea>
+                            <textarea id="productDescription" value={data.productDescription} name="productDescription" rows="6" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-4" placeholder="Details" onChange={handleChange} ></textarea>
                         </div>
                     </div>
                     <div class="p-6 border-t border-gray-200 rounded-b">
-                        <button class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="submit">{type == "Edit" ? "Edit" : "Create"}</button>
+                        <button class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="submit">{type === "Edit" ? "Edit" : "Create"}</button>
                     </div>
                 </form>
             </div>
