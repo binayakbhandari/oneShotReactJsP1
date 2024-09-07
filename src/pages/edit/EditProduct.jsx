@@ -5,7 +5,7 @@ function EditProduct(){
     return(
         <>
         <Navbar />
-        <Form type='Edit' />
+        <Form type='edit' />
         </>
     )
 }
