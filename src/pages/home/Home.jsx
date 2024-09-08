@@ -18,7 +18,7 @@ function Home() {
     return (
         <>
             <Navbar />
-            <div className="flex space-x-5 mt-4 ml-2 flex-wrap">
+            <div className="flex space-x-5 mt-4 ml-4 flex-wrap">
                 {
                     products.map((product) => {
                         return (
