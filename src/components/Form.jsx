@@ -1,19 +1,31 @@
 import axios from "axios"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-function Form({type,product}){
+function Form({type,id}){
     // console.log(product,"haha")
     const navigate = useNavigate()
-    const [data,setData] = useState(product || {
-        productName: "",
-        productCategory: "",
-        productBrand: "",
-        productPrice: "",
-        productImage: "",
-        productDescription: "",
-      })
-    console.log(data,"This is data")
+    // const [data,setData] = useState(product || {
+    //     productName: "",
+    //     productCategory: "",
+    //     productBrand: "",
+    //     productPrice: "",
+    //     productImage: "",
+    //     productDescription: "",
+    //   })
+    const [data,setData] = useState({})
+    const fetchProduct = async ()=>{
+        const response = await axios.get("https://66dc946947d749b72acbfa21.mockapi.io/products/" + id)
+        if(response.status === 200){
+            setData(response.data)
+        }
+    }
+
+    useEffect(()=>{
+        if(type=="edit"){
+            fetchProduct()
+        }
+    },[])
 
     const handleChange = (e)=>{
         const {value, name} = e.target
@@ -26,14 +38,19 @@ function Form({type,product}){
     const createProduct = async (e)=>{
         e.preventDefault()
         if(type === "create"){
-            const response = await axios.post("https://66dc946947d749b72acbfa21.mockapi.io/products",data)
+            const response = await axios.post("https://66dc946947d749b72acbfa21.mockapi.io/products/",data)
             if(response.status === 201){
                 navigate("/")
             }else{
                 alert("Fail to create a product.")
             }
         }else{
-
+            const response = await axios.put("https://66dc946947d749b72acbfa21.mockapi.io/products/" + id,data)
+            if(response.status === 200){
+                navigate("/product/" + id)
+            }else{
+                alert("Fail to edit the product.")
+            }
         }
     }
 
@@ -78,7 +95,7 @@ function Form({type,product}){
                         </div>
                     </div>
                     <div class="p-6 border-t border-gray-200 rounded-b">
-                        <button class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="submit">{type === "Edit" ? "Edit" : "Create"}</button>
+                        <button class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="submit">{type === "edit" ? "Edit" : "Create"}</button>
                     </div>
                 </form>
             </div>

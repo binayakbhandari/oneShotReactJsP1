@@ -5,7 +5,7 @@ function CreateProduct() {
     return (
         <>
             <Navbar />
-            <Form type='Create' />
+            <Form type='create' />
         </>
     )
 }
