@@ -8,7 +8,7 @@ function Card({product}) {
                     <img class="w-full" src={product.productImage} alt="Sunset in the mountains" />
                     <div class="px-6 py-4">
                         <div class="font-bold text-2xl mb-1">{product.productName}</div>
-                        <div class="font-bold text-l mb-2">- {product.productCategory}</div>
+                        <div class="font-semibold text-l mb-2">- {product.productCategory}</div>
                         <p class="text-gray-700 text-base">
                             {product.productDescription}
                         </p>
